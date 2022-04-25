@@ -33,14 +33,14 @@ components:
         type: string
     Latest:
       description: |
-        The latest time filter in absolute time. When specifying an absolute time specify either UNIX time, or UTC in seconds using the ISO-8601 (%FT%T.%Q) format. For example 2019-01-25T13:15:30Z. GMT is the default timezone. You must specify GMT when you specify UTC. Any offset specified is ignored.
+        The latest time filter in absolute time. When specifying an absolute time specify either UNIX time, or UTC in seconds using the ISO-8601 (%FT%T.%Q) format. For example 2019-01-25T13:15:30Z. GMT is the default timezone. You must specify GMT when you specify UTC. Any offset specified is ignored. Latest time must be after Earliest time.
       in: query
       name: latest
       schema:
         type: string
     SidFilter:
       description: |
-        Filter the list of jobs by sid. Valid format is  `sid IN ({comma separated list of SIDs in quotes})`. A maximum of 50 SIDs can be specified in one query.
+        Filter the list of jobs by sid. Valid format is  `sid IN ({comma separated list of SIDs in quotes})`. A maximum of 30 SIDs can be specified in one query.
       in: query
       name: filter
       schema:
@@ -533,12 +533,13 @@ components:
       type: object
     SearchStatus:
       description: |
-        The current status of the search job. The valid status values are 'running', 'done', 'canceled', and 'failed'.
+        The current status of the search job. The valid status values are 'running', 'done', 'canceled', 'finalized' and 'failed'.
       enum:
       - running
       - done
       - canceled
       - failed
+      - finalized
       type: string
     SingleFieldSummary:
       description: Summary of each field.
@@ -994,4 +995,4 @@ paths:
         "500":
           description: An internal service error occurred.
 
-# Retrieved from scp-openapi commit 5bcc18023c79088bf6bdbcad5d85d1bbdfda268b path: search/v2beta1/openapi.yaml
+# Retrieved from scp-openapi commit 820564ba8a17697d087ff171b14cbad60a716ee3 path: search/v2beta1/openapi.yaml
