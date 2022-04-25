@@ -122,17 +122,9 @@ def test_record_operations(test_client):
     assert(len(keys) == 2)
 
     # list a record
-    records = kvs.list_records(collection_name)
+    records = kvs.list_records(collection_name, fields=['column'], count=1)
     assert(records is not None)
-    assert(len(records) == 3)
-    # remove metadata before comparing records
-    for r in records:
-        del r['_key']
-        del r['_user']
-        del r['_response']
-    assert({'column': my_data} in records)
-    assert({'data': 'backups'} in records)
-    assert({'level': 'logs'} in records)
+    assert(records[0] == {'column': my_data})
 
     # get record by key
     rec = kvs.get_record_by_key(collection_name, key.key)

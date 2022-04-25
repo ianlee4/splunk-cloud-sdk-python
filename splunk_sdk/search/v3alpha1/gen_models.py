@@ -1,4 +1,4 @@
-# Copyright © 2022 Splunk, Inc.
+# Copyright © 2021 Splunk, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"): you may
 # not use this file except in compliance with the License. You may obtain
@@ -947,7 +947,6 @@ class SearchStatus(str, Enum):
     DONE = "done"
     CANCELED = "canceled"
     FAILED = "failed"
-    FINALIZED = "finalized"
 
     @staticmethod
     def from_value(value: str):
@@ -959,8 +958,6 @@ class SearchStatus(str, Enum):
             return SearchStatus.CANCELED
         if value == "failed":
             return SearchStatus.FAILED
-        if value == "finalized":
-            return SearchStatus.FINALIZED
 
 
 class DeleteSearchJob(SSCModel):
@@ -1694,7 +1691,7 @@ class FederatedConnectionInput(SSCModel):
         instance._attrs = model
         return instance
 
-    def __init__(self, hostnameip: "str", name: "str", port: "float", serviceaccountpassword: "str", serviceaccountuser: "str", **extra):
+    def __init__(self, hostnameip: "str" = None, name: "str" = None, port: "float" = None, serviceaccountuser: "str" = None, **extra):
         """FederatedConnectionInput"""
 
         self._attrs = dict()
@@ -1704,8 +1701,6 @@ class FederatedConnectionInput(SSCModel):
             self._attrs["name"] = name
         if port is not None:
             self._attrs["port"] = port
-        if serviceaccountpassword is not None:
-            self._attrs["serviceaccountpassword"] = serviceaccountpassword
         if serviceaccountuser is not None:
             self._attrs["serviceaccountuser"] = serviceaccountuser
         for k, v in extra.items():
@@ -1727,8 +1722,6 @@ class FederatedConnectionInput(SSCModel):
         :param hostnameip: The hostnameip of this FederatedConnectionInput.
         :type: str
         """
-        if hostnameip is None:
-            raise ValueError("Invalid value for `hostnameip`, must not be `None`")
         self._attrs["hostnameip"] = hostnameip
 
     @property
@@ -1747,8 +1740,6 @@ class FederatedConnectionInput(SSCModel):
         :param name: The name of this FederatedConnectionInput.
         :type: str
         """
-        if name is None:
-            raise ValueError("Invalid value for `name`, must not be `None`")
         self._attrs["name"] = name
 
     @property
@@ -1767,29 +1758,7 @@ class FederatedConnectionInput(SSCModel):
         :param port: The port of this FederatedConnectionInput.
         :type: float
         """
-        if port is None:
-            raise ValueError("Invalid value for `port`, must not be `None`")
         self._attrs["port"] = port
-
-    @property
-    def serviceaccountpassword(self) -> "str":
-        """ Gets the serviceaccountpassword of this FederatedConnectionInput.
-        The password of the service account.
-        """
-        return self._attrs.get("serviceaccountpassword")
-
-    @serviceaccountpassword.setter
-    def serviceaccountpassword(self, serviceaccountpassword: "str"):
-        """Sets the serviceaccountpassword of this FederatedConnectionInput.
-
-        The password of the service account.
-
-        :param serviceaccountpassword: The serviceaccountpassword of this FederatedConnectionInput.
-        :type: str
-        """
-        if serviceaccountpassword is None:
-            raise ValueError("Invalid value for `serviceaccountpassword`, must not be `None`")
-        self._attrs["serviceaccountpassword"] = serviceaccountpassword
 
     @property
     def serviceaccountuser(self) -> "str":
@@ -1807,8 +1776,6 @@ class FederatedConnectionInput(SSCModel):
         :param serviceaccountuser: The serviceaccountuser of this FederatedConnectionInput.
         :type: str
         """
-        if serviceaccountuser is None:
-            raise ValueError("Invalid value for `serviceaccountuser`, must not be `None`")
         self._attrs["serviceaccountuser"] = serviceaccountuser
 
     def to_dict(self):
@@ -2443,7 +2410,7 @@ class SingleFieldSummary(SSCModel):
     @property
     def is_exact(self) -> "bool":
         """ Gets the is_exact of this SingleFieldSummary.
-        Specifies if the 'distinctCount' is accurate. The 'isExact' property is FALSE when the 'distinctCount' exceeds the maximum count and an exact count is not available. 
+        Specifies if the 'distinctCount' is accurate.  The 'isExact' property is FALSE when the 'distinctCount'  exceeds the maximum count and an exact count is not available. 
         """
         return self._attrs.get("isExact")
 
@@ -2451,7 +2418,7 @@ class SingleFieldSummary(SSCModel):
     def is_exact(self, is_exact: "bool"):
         """Sets the is_exact of this SingleFieldSummary.
 
-        Specifies if the 'distinctCount' is accurate. The 'isExact' property is FALSE when the 'distinctCount' exceeds the maximum count and an exact count is not available. 
+        Specifies if the 'distinctCount' is accurate.  The 'isExact' property is FALSE when the 'distinctCount'  exceeds the maximum count and an exact count is not available. 
 
         :param is_exact: The is_exact of this SingleFieldSummary.
         :type: bool
@@ -2630,7 +2597,7 @@ class SingleValueMode(SSCModel):
     @property
     def is_exact(self) -> "bool":
         """ Gets the is_exact of this SingleValueMode.
-        Specifies if the count is accurate. The 'isExact' property is FALSE when the 'count' exceeds the maximum count and an exact count is not available. 
+        Specifies if the count is accurate.  The 'isExact' property is FALSE when the 'count' exceeds  the maximum count and an exact count is not available. 
         """
         return self._attrs.get("isExact")
 
@@ -2638,7 +2605,7 @@ class SingleValueMode(SSCModel):
     def is_exact(self, is_exact: "bool"):
         """Sets the is_exact of this SingleValueMode.
 
-        Specifies if the count is accurate. The 'isExact' property is FALSE when the 'count' exceeds the maximum count and an exact count is not available. 
+        Specifies if the count is accurate.  The 'isExact' property is FALSE when the 'count' exceeds  the maximum count and an exact count is not available. 
 
         :param is_exact: The is_exact of this SingleValueMode.
         :type: bool
@@ -2695,7 +2662,7 @@ class FieldsSummary(SSCModel):
     @property
     def duration(self) -> "float":
         """ Gets the duration of this FieldsSummary.
-        The amount of time, in seconds, that a time bucket spans from the earliest to the latest time. 
+        The amount of time, in seconds, that a time bucket  spans from the earliest to the latest time. 
         """
         return self._attrs.get("duration")
 
@@ -2703,7 +2670,7 @@ class FieldsSummary(SSCModel):
     def duration(self, duration: "float"):
         """Sets the duration of this FieldsSummary.
 
-        The amount of time, in seconds, that a time bucket spans from the earliest to the latest time. 
+        The amount of time, in seconds, that a time bucket  spans from the earliest to the latest time. 
 
         :param duration: The duration of this FieldsSummary.
         :type: float
@@ -2713,7 +2680,7 @@ class FieldsSummary(SSCModel):
     @property
     def earliest_time(self) -> "str":
         """ Gets the earliest_time of this FieldsSummary.
-        If specified, the earliest timestamp in UTC format of the events to process. 
+        If specified, the earliest timestamp in UTC format  of the events to process. 
         """
         return self._attrs.get("earliestTime")
 
@@ -2721,7 +2688,7 @@ class FieldsSummary(SSCModel):
     def earliest_time(self, earliest_time: "str"):
         """Sets the earliest_time of this FieldsSummary.
 
-        If specified, the earliest timestamp in UTC format of the events to process. 
+        If specified, the earliest timestamp in UTC format  of the events to process. 
 
         :param earliest_time: The earliest_time of this FieldsSummary.
         :type: str
@@ -2731,7 +2698,7 @@ class FieldsSummary(SSCModel):
     @property
     def event_count(self) -> "int":
         """ Gets the event_count of this FieldsSummary.
-        The total number of events for all fields returned in the time range ('earliestTime' and 'latestTime') specified. 
+        The total number of events for all fields returned  in the time range ('earliestTime' and 'latestTime') specified. 
         """
         return self._attrs.get("eventCount")
 
@@ -2739,7 +2706,7 @@ class FieldsSummary(SSCModel):
     def event_count(self, event_count: "int"):
         """Sets the event_count of this FieldsSummary.
 
-        The total number of events for all fields returned in the time range ('earliestTime' and 'latestTime') specified. 
+        The total number of events for all fields returned  in the time range ('earliestTime' and 'latestTime') specified. 
 
         :param event_count: The event_count of this FieldsSummary.
         :type: int
@@ -2767,7 +2734,7 @@ class FieldsSummary(SSCModel):
     @property
     def latest_time(self) -> "str":
         """ Gets the latest_time of this FieldsSummary.
-        If specified, the latest timestamp in UTC format of the events to process. 
+        If specified, the latest timestamp in UTC format  of the events to process. 
         """
         return self._attrs.get("latestTime")
 
@@ -2775,7 +2742,7 @@ class FieldsSummary(SSCModel):
     def latest_time(self, latest_time: "str"):
         """Sets the latest_time of this FieldsSummary.
 
-        If specified, the latest timestamp in UTC format of the events to process. 
+        If specified, the latest timestamp in UTC format  of the events to process. 
 
         :param latest_time: The latest_time of this FieldsSummary.
         :type: str
@@ -3921,24 +3888,58 @@ class Module(SSCModel):
         instance._attrs = model
         return instance
 
-    def __init__(self, definition: "str", name: "str", created_at: "str" = None, created_by: "str" = None, namespace: "str" = None, source_path: "str" = None, **extra):
+    def __init__(self, created: "str" = None, createdby: "str" = None, definition: "str" = None, name: "str" = None, namespace: "str" = None, **extra):
         """Module"""
 
         self._attrs = dict()
+        if created is not None:
+            self._attrs["created"] = created
+        if createdby is not None:
+            self._attrs["createdby"] = createdby
         if definition is not None:
             self._attrs["definition"] = definition
         if name is not None:
             self._attrs["name"] = name
-        if created_at is not None:
-            self._attrs["createdAt"] = created_at
-        if created_by is not None:
-            self._attrs["createdBy"] = created_by
         if namespace is not None:
             self._attrs["namespace"] = namespace
-        if source_path is not None:
-            self._attrs["sourcePath"] = source_path
         for k, v in extra.items():
             self._attrs[k] = v
+
+    @property
+    def created(self) -> "str":
+        """ Gets the created of this Module.
+        The timestamp when the module was created
+        """
+        return self._attrs.get("created")
+
+    @created.setter
+    def created(self, created: "str"):
+        """Sets the created of this Module.
+
+        The timestamp when the module was created
+
+        :param created: The created of this Module.
+        :type: str
+        """
+        self._attrs["created"] = created
+
+    @property
+    def createdby(self) -> "str":
+        """ Gets the createdby of this Module.
+        The user who created the module
+        """
+        return self._attrs.get("createdby")
+
+    @createdby.setter
+    def createdby(self, createdby: "str"):
+        """Sets the createdby of this Module.
+
+        The user who created the module
+
+        :param createdby: The createdby of this Module.
+        :type: str
+        """
+        self._attrs["createdby"] = createdby
 
     @property
     def definition(self) -> "str":
@@ -3956,8 +3957,6 @@ class Module(SSCModel):
         :param definition: The definition of this Module.
         :type: str
         """
-        if definition is None:
-            raise ValueError("Invalid value for `definition`, must not be `None`")
         self._attrs["definition"] = definition
 
     @property
@@ -3976,45 +3975,7 @@ class Module(SSCModel):
         :param name: The name of this Module.
         :type: str
         """
-        if name is None:
-            raise ValueError("Invalid value for `name`, must not be `None`")
         self._attrs["name"] = name
-
-    @property
-    def created_at(self) -> "str":
-        """ Gets the created_at of this Module.
-        The timestamp when the module was created
-        """
-        return self._attrs.get("createdAt")
-
-    @created_at.setter
-    def created_at(self, created_at: "str"):
-        """Sets the created_at of this Module.
-
-        The timestamp when the module was created
-
-        :param created_at: The created_at of this Module.
-        :type: str
-        """
-        self._attrs["createdAt"] = created_at
-
-    @property
-    def created_by(self) -> "str":
-        """ Gets the created_by of this Module.
-        The user who created the module
-        """
-        return self._attrs.get("createdBy")
-
-    @created_by.setter
-    def created_by(self, created_by: "str"):
-        """Sets the created_by of this Module.
-
-        The user who created the module
-
-        :param created_by: The created_by of this Module.
-        :type: str
-        """
-        self._attrs["createdBy"] = created_by
 
     @property
     def namespace(self) -> "str":
@@ -4033,24 +3994,6 @@ class Module(SSCModel):
         :type: str
         """
         self._attrs["namespace"] = namespace
-
-    @property
-    def source_path(self) -> "str":
-        """ Gets the source_path of this Module.
-        The location of the module
-        """
-        return self._attrs.get("sourcePath")
-
-    @source_path.setter
-    def source_path(self, source_path: "str"):
-        """Sets the source_path of this Module.
-
-        The location of the module
-
-        :param source_path: The source_path of this Module.
-        :type: str
-        """
-        self._attrs["sourcePath"] = source_path
 
     def to_dict(self):
         return {k: v for (k, v) in self._attrs.items() if v is not None}
@@ -5831,7 +5774,7 @@ class SearchJob(SSCModel):
     @property
     def allow_side_effects(self) -> "bool":
         """ Gets the allow_side_effects of this SearchJob.
-        Specifies whether a search that contains commands with side effects (with possible security risks) is allowed to run. 
+        Specifies whether a search that contains commands with side effects  (with possible security risks) is allowed to run. 
         """
         return self._attrs.get("allowSideEffects")
 
@@ -5839,7 +5782,7 @@ class SearchJob(SSCModel):
     def allow_side_effects(self, allow_side_effects: "bool"):
         """Sets the allow_side_effects of this SearchJob.
 
-        Specifies whether a search that contains commands with side effects (with possible security risks) is allowed to run. 
+        Specifies whether a search that contains commands with side effects  (with possible security risks) is allowed to run. 
 
         :param allow_side_effects: The allow_side_effects of this SearchJob.
         :type: bool
@@ -5849,7 +5792,7 @@ class SearchJob(SSCModel):
     @property
     def collect_event_summary(self) -> "bool":
         """ Gets the collect_event_summary of this SearchJob.
-        Specifies whether a search is allowed to collect events summary information during the run time. 
+        Specifies whether a search is allowed to collect events summary  information during the run time. 
         """
         return self._attrs.get("collectEventSummary")
 
@@ -5857,7 +5800,7 @@ class SearchJob(SSCModel):
     def collect_event_summary(self, collect_event_summary: "bool"):
         """Sets the collect_event_summary of this SearchJob.
 
-        Specifies whether a search is allowed to collect events summary information during the run time. 
+        Specifies whether a search is allowed to collect events summary  information during the run time. 
 
         :param collect_event_summary: The collect_event_summary of this SearchJob.
         :type: bool
@@ -5867,7 +5810,7 @@ class SearchJob(SSCModel):
     @property
     def collect_field_summary(self) -> "bool":
         """ Gets the collect_field_summary of this SearchJob.
-        Specifies whether a search is allowed to collect fields summary information during the run time. 
+        Specifies whether a search is allowed to collect fields summary  information during the run time. 
         """
         return self._attrs.get("collectFieldSummary")
 
@@ -5875,7 +5818,7 @@ class SearchJob(SSCModel):
     def collect_field_summary(self, collect_field_summary: "bool"):
         """Sets the collect_field_summary of this SearchJob.
 
-        Specifies whether a search is allowed to collect fields summary information during the run time. 
+        Specifies whether a search is allowed to collect fields summary  information during the run time. 
 
         :param collect_field_summary: The collect_field_summary of this SearchJob.
         :type: bool
@@ -5885,7 +5828,7 @@ class SearchJob(SSCModel):
     @property
     def collect_time_buckets(self) -> "bool":
         """ Gets the collect_time_buckets of this SearchJob.
-        Specifies whether a search is allowed to collect timeline buckets summary information during the run time. 
+        Specifies whether a search is allowed to collect timeline buckets  summary information during the run time. 
         """
         return self._attrs.get("collectTimeBuckets")
 
@@ -5893,7 +5836,7 @@ class SearchJob(SSCModel):
     def collect_time_buckets(self, collect_time_buckets: "bool"):
         """Sets the collect_time_buckets of this SearchJob.
 
-        Specifies whether a search is allowed to collect timeline buckets summary information during the run time. 
+        Specifies whether a search is allowed to collect timeline buckets  summary information during the run time. 
 
         :param collect_time_buckets: The collect_time_buckets of this SearchJob.
         :type: bool
@@ -5903,7 +5846,7 @@ class SearchJob(SSCModel):
     @property
     def completion_time(self) -> "str":
         """ Gets the completion_time of this SearchJob.
-        The time, in GMT, that the search job is finished. Empty if the search job has not completed. 
+        The time, in GMT, that the search job is finished.  Empty if the search job has not completed. 
         """
         return self._attrs.get("completionTime")
 
@@ -5911,7 +5854,7 @@ class SearchJob(SSCModel):
     def completion_time(self, completion_time: "str"):
         """Sets the completion_time of this SearchJob.
 
-        The time, in GMT, that the search job is finished. Empty if the search job has not completed. 
+        The time, in GMT, that the search job is finished.  Empty if the search job has not completed. 
 
         :param completion_time: The completion_time of this SearchJob.
         :type: str
@@ -5939,7 +5882,7 @@ class SearchJob(SSCModel):
     @property
     def enable_preview(self) -> "bool":
         """ Gets the enable_preview of this SearchJob.
-        Specifies whether a search is allowed to collect preview results during the run time. 
+        Specifies whether a search is allowed to collect preview results  during the run time. 
         """
         return self._attrs.get("enablePreview")
 
@@ -5947,7 +5890,7 @@ class SearchJob(SSCModel):
     def enable_preview(self, enable_preview: "bool"):
         """Sets the enable_preview of this SearchJob.
 
-        Specifies whether a search is allowed to collect preview results during the run time. 
+        Specifies whether a search is allowed to collect preview results  during the run time. 
 
         :param enable_preview: The enable_preview of this SearchJob.
         :type: bool
@@ -5993,7 +5936,7 @@ class SearchJob(SSCModel):
     @property
     def max_time(self) -> "int":
         """ Gets the max_time of this SearchJob.
-        The number of seconds to run the search before finalizing the search. The default value is 3600 seconds (1 hour). The maximum value is 3600 seconds (1 hour). 
+        The number of seconds to run the search before finalizing the search.  The default value is 3600 seconds (1 hour).  The maximum value is 3600 seconds (1 hour). 
         """
         return self._attrs.get("maxTime")
 
@@ -6001,7 +5944,7 @@ class SearchJob(SSCModel):
     def max_time(self, max_time: "int"):
         """Sets the max_time of this SearchJob.
 
-        The number of seconds to run the search before finalizing the search. The default value is 3600 seconds (1 hour). The maximum value is 3600 seconds (1 hour). 
+        The number of seconds to run the search before finalizing the search.  The default value is 3600 seconds (1 hour).  The maximum value is 3600 seconds (1 hour). 
 
         :param max_time: The max_time of this SearchJob.
         :type: int
@@ -6027,7 +5970,7 @@ class SearchJob(SSCModel):
     @property
     def module(self) -> "str":
         """ Gets the module of this SearchJob.
-        The module to run the search in. The default module is used if a module is not specified. 
+        The module to run the search in. The default module is  used if a module is not specified. 
         """
         return self._attrs.get("module")
 
@@ -6035,7 +5978,7 @@ class SearchJob(SSCModel):
     def module(self, module: "str"):
         """Sets the module of this SearchJob.
 
-        The module to run the search in. The default module is used if a module is not specified. 
+        The module to run the search in. The default module is  used if a module is not specified. 
 
         :param module: The module of this SearchJob.
         :type: str
@@ -6063,7 +6006,7 @@ class SearchJob(SSCModel):
     @property
     def parent(self) -> "str":
         """ Gets the parent of this SearchJob.
-        The 'rsid' of an associated recurring-search, if this search job is dispatched by a recurring-search. 
+        The 'rsid' of an associated recurring-search, if this search  job is dispatched by a recurring-search. 
         """
         return self._attrs.get("parent")
 
@@ -6071,7 +6014,7 @@ class SearchJob(SSCModel):
     def parent(self, parent: "str"):
         """Sets the parent of this SearchJob.
 
-        The 'rsid' of an associated recurring-search, if this search job is dispatched by a recurring-search. 
+        The 'rsid' of an associated recurring-search, if this search  job is dispatched by a recurring-search. 
 
         :param parent: The parent of this SearchJob.
         :type: str
@@ -6081,7 +6024,7 @@ class SearchJob(SSCModel):
     @property
     def percent_complete(self) -> "int":
         """ Gets the percent_complete of this SearchJob.
-        An estimate of the percent of time remaining before the job completes. 
+        An estimate of the percent of time remaining  before the job completes. 
         """
         return self._attrs.get("percentComplete")
 
@@ -6089,7 +6032,7 @@ class SearchJob(SSCModel):
     def percent_complete(self, percent_complete: "int"):
         """Sets the percent_complete of this SearchJob.
 
-        An estimate of the percent of time remaining before the job completes. 
+        An estimate of the percent of time remaining  before the job completes. 
 
         :param percent_complete: The percent_complete of this SearchJob.
         :type: int
@@ -6099,7 +6042,7 @@ class SearchJob(SSCModel):
     @property
     def preview_available(self) -> "str":
         """ Gets the preview_available of this SearchJob.
-        Specifies if preview results are available for the search job. The valid status values are 'unknown', 'true', and 'false'. 
+        Specifies if preview results are available for the search job.  The valid status values are 'unknown', 'true', and 'false'. 
         """
         return self._attrs.get("previewAvailable")
 
@@ -6107,7 +6050,7 @@ class SearchJob(SSCModel):
     def preview_available(self, preview_available: "str"):
         """Sets the preview_available of this SearchJob.
 
-        Specifies if preview results are available for the search job. The valid status values are 'unknown', 'true', and 'false'. 
+        Specifies if preview results are available for the search job.  The valid status values are 'unknown', 'true', and 'false'. 
 
         :param preview_available: The preview_available of this SearchJob.
         :type: str
@@ -6117,7 +6060,7 @@ class SearchJob(SSCModel):
     @property
     def query_parameters(self) -> "QueryParameters":
         """ Gets the query_parameters of this SearchJob.
-        Represents parameters on the search job such as 'earliest' and 'latest'. 
+        Represents parameters on the search job such as  'earliest' and 'latest'. 
         """
         return QueryParameters._from_dict(self._attrs["queryParameters"])
 
@@ -6125,7 +6068,7 @@ class SearchJob(SSCModel):
     def query_parameters(self, query_parameters: "QueryParameters"):
         """Sets the query_parameters of this SearchJob.
 
-        Represents parameters on the search job such as 'earliest' and 'latest'. 
+        Represents parameters on the search job such as  'earliest' and 'latest'. 
 
         :param query_parameters: The query_parameters of this SearchJob.
         :type: QueryParameters
@@ -6153,7 +6096,7 @@ class SearchJob(SSCModel):
     @property
     def resolved_earliest(self) -> "str":
         """ Gets the resolved_earliest of this SearchJob.
-        The earliest time speciifed as an absolute value in GMT. The time is computed based on the values you specify for the 'timezone' and 'earliest' queryParameters. 
+        The earliest time speciifed as an absolute value in GMT.  The time is computed based on the values you specify for the  'timezone' and 'earliest' queryParameters. 
         """
         return self._attrs.get("resolvedEarliest")
 
@@ -6161,7 +6104,7 @@ class SearchJob(SSCModel):
     def resolved_earliest(self, resolved_earliest: "str"):
         """Sets the resolved_earliest of this SearchJob.
 
-        The earliest time speciifed as an absolute value in GMT. The time is computed based on the values you specify for the 'timezone' and 'earliest' queryParameters. 
+        The earliest time speciifed as an absolute value in GMT.  The time is computed based on the values you specify for the  'timezone' and 'earliest' queryParameters. 
 
         :param resolved_earliest: The resolved_earliest of this SearchJob.
         :type: str
@@ -6171,7 +6114,7 @@ class SearchJob(SSCModel):
     @property
     def resolved_latest(self) -> "str":
         """ Gets the resolved_latest of this SearchJob.
-        The latest time specified as an absolute value in GMT. The time is computed based on the values you specify for the 'timezone' and 'earliest' queryParameters. 
+        The latest time specified as an absolute value in GMT.  The time is computed based on the values you specify for the  'timezone' and 'earliest' queryParameters. 
         """
         return self._attrs.get("resolvedLatest")
 
@@ -6179,7 +6122,7 @@ class SearchJob(SSCModel):
     def resolved_latest(self, resolved_latest: "str"):
         """Sets the resolved_latest of this SearchJob.
 
-        The latest time specified as an absolute value in GMT. The time is computed based on the values you specify for the 'timezone' and 'earliest' queryParameters. 
+        The latest time specified as an absolute value in GMT.  The time is computed based on the values you specify for the  'timezone' and 'earliest' queryParameters. 
 
         :param resolved_latest: The resolved_latest of this SearchJob.
         :type: str
@@ -6207,7 +6150,7 @@ class SearchJob(SSCModel):
     @property
     def results_preview_available(self) -> "int":
         """ Gets the results_preview_available of this SearchJob.
-        The number of the preview search results for the job with the specified search ID (sid). 
+        The number of the preview search results for the job with the  specified search ID (sid). 
         """
         return self._attrs.get("resultsPreviewAvailable")
 
@@ -6215,7 +6158,7 @@ class SearchJob(SSCModel):
     def results_preview_available(self, results_preview_available: "int"):
         """Sets the results_preview_available of this SearchJob.
 
-        The number of the preview search results for the job with the specified search ID (sid). 
+        The number of the preview search results for the job with the  specified search ID (sid). 
 
         :param results_preview_available: The results_preview_available of this SearchJob.
         :type: int
@@ -6510,7 +6453,7 @@ class SearchModule(SSCModel):
         instance._attrs = model
         return instance
 
-    def __init__(self, module: "str" = None, namespace: "str" = '', query_parameters: "Dict[str, SingleStatementQueryParameters]" = None, wip_modules: "Dict[str, Module]" = None, **extra):
+    def __init__(self, module: "str" = None, namespace: "str" = '', query_parameters: "Dict[str, SingleStatementQueryParameters]" = None, **extra):
         """SearchModule"""
 
         self._attrs = dict()
@@ -6520,8 +6463,6 @@ class SearchModule(SSCModel):
             self._attrs["namespace"] = namespace
         if query_parameters is not None:
             self._attrs["queryParameters"] = query_parameters
-        if wip_modules is not None:
-            self._attrs["wipModules"] = wip_modules
         for k, v in extra.items():
             self._attrs[k] = v
 
@@ -6564,7 +6505,7 @@ class SearchModule(SSCModel):
     @property
     def query_parameters(self) -> "Dict[str, SingleStatementQueryParameters]":
         """ Gets the query_parameters of this SearchModule.
-        The parameters on the search statement, such as 'earliest' and 'latest. The request can specify a \"defaults\" set of statement queryParameters which override the system default queryParameters. Each export statement requires to have a statement queryParameters in the object, it can be empty if there is no override. Search statement name can be \"defaults\". The \"defaults\" set of queryParameters will be applied to all other search statements in the module. 
+        The parameters on the search statement, such as 'earliest' and 'latest. The request can specify a \"defaults\" set of statement queryParameters which override the system default queryParameters. Each export statement requires to have a statement queryParameters in the object, it can be empty if there is no override. 
         """
         return self._attrs.get("queryParameters")
 
@@ -6572,30 +6513,12 @@ class SearchModule(SSCModel):
     def query_parameters(self, query_parameters: "Dict[str, SingleStatementQueryParameters]"):
         """Sets the query_parameters of this SearchModule.
 
-        The parameters on the search statement, such as 'earliest' and 'latest. The request can specify a \"defaults\" set of statement queryParameters which override the system default queryParameters. Each export statement requires to have a statement queryParameters in the object, it can be empty if there is no override. Search statement name can be \"defaults\". The \"defaults\" set of queryParameters will be applied to all other search statements in the module. 
+        The parameters on the search statement, such as 'earliest' and 'latest. The request can specify a \"defaults\" set of statement queryParameters which override the system default queryParameters. Each export statement requires to have a statement queryParameters in the object, it can be empty if there is no override. 
 
         :param query_parameters: The query_parameters of this SearchModule.
         :type: Dict[str, SingleStatementQueryParameters]
         """
         self._attrs["queryParameters"] = query_parameters
-
-    @property
-    def wip_modules(self) -> "Dict[str, Module]":
-        """ Gets the wip_modules of this SearchModule.
-        WIP (Work in progress) modules which are used in the module's search statements, but not yet registered . 
-        """
-        return self._attrs.get("wipModules")
-
-    @wip_modules.setter
-    def wip_modules(self, wip_modules: "Dict[str, Module]"):
-        """Sets the wip_modules of this SearchModule.
-
-        WIP (Work in progress) modules which are used in the module's search statements, but not yet registered . 
-
-        :param wip_modules: The wip_modules of this SearchModule.
-        :type: Dict[str, Module]
-        """
-        self._attrs["wipModules"] = wip_modules
 
     def to_dict(self):
         return {k: v for (k, v) in self._attrs.items() if v is not None}
@@ -6631,7 +6554,7 @@ class SingleTimeBucket(SSCModel):
     @property
     def available_count(self) -> "int":
         """ Gets the available_count of this SingleTimeBucket.
-        Count of available events. Not all events in a bucket are retrievable. Typically this count is capped at 10000. 
+        Count of available events. Not all events in a bucket  are retrievable. Typically this count is capped at 10000. 
         """
         return self._attrs.get("availableCount")
 
@@ -6639,7 +6562,7 @@ class SingleTimeBucket(SSCModel):
     def available_count(self, available_count: "int"):
         """Sets the available_count of this SingleTimeBucket.
 
-        Count of available events. Not all events in a bucket are retrievable. Typically this count is capped at 10000. 
+        Count of available events. Not all events in a bucket  are retrievable. Typically this count is capped at 10000. 
 
         :param available_count: The available_count of this SingleTimeBucket.
         :type: int
@@ -6665,7 +6588,7 @@ class SingleTimeBucket(SSCModel):
     @property
     def earliest_time(self) -> "float":
         """ Gets the earliest_time of this SingleTimeBucket.
-        The timestamp of the earliest event in the current bucket, in UNIX format. This is the same time as 'earliestTimeStrfTime' in UNIX format. 
+        The timestamp of the earliest event in the current bucket,  in UNIX format. This is the same time as 'earliestTimeStrfTime'  in UNIX format. 
         """
         return self._attrs.get("earliestTime")
 
@@ -6673,7 +6596,7 @@ class SingleTimeBucket(SSCModel):
     def earliest_time(self, earliest_time: "float"):
         """Sets the earliest_time of this SingleTimeBucket.
 
-        The timestamp of the earliest event in the current bucket, in UNIX format. This is the same time as 'earliestTimeStrfTime' in UNIX format. 
+        The timestamp of the earliest event in the current bucket,  in UNIX format. This is the same time as 'earliestTimeStrfTime'  in UNIX format. 
 
         :param earliest_time: The earliest_time of this SingleTimeBucket.
         :type: float
@@ -6683,7 +6606,7 @@ class SingleTimeBucket(SSCModel):
     @property
     def earliest_time_strf_time(self) -> "str":
         """ Gets the earliest_time_strf_time of this SingleTimeBucket.
-        The timestamp of the earliest event in the current bucket, in UTC format with seconds. For example 2019-01-25T13:15:30Z, which follows the ISO-8601 (%FT%T.%Q) format. 
+        The timestamp of the earliest event in the current bucket,  in UTC format with seconds. For example 2019-01-25T13:15:30Z,  which follows the ISO-8601 (%FT%T.%Q) format. 
         """
         return self._attrs.get("earliestTimeStrfTime")
 
@@ -6691,7 +6614,7 @@ class SingleTimeBucket(SSCModel):
     def earliest_time_strf_time(self, earliest_time_strf_time: "str"):
         """Sets the earliest_time_strf_time of this SingleTimeBucket.
 
-        The timestamp of the earliest event in the current bucket, in UTC format with seconds. For example 2019-01-25T13:15:30Z, which follows the ISO-8601 (%FT%T.%Q) format. 
+        The timestamp of the earliest event in the current bucket,  in UTC format with seconds. For example 2019-01-25T13:15:30Z,  which follows the ISO-8601 (%FT%T.%Q) format. 
 
         :param earliest_time_strf_time: The earliest_time_strf_time of this SingleTimeBucket.
         :type: str
@@ -6701,7 +6624,7 @@ class SingleTimeBucket(SSCModel):
     @property
     def is_finalized(self) -> "bool":
         """ Gets the is_finalized of this SingleTimeBucket.
-        Specifies if all of the events in the current bucket have been finalized. 
+        Specifies if all of the events in the current bucket  have been finalized. 
         """
         return self._attrs.get("isFinalized")
 
@@ -6709,7 +6632,7 @@ class SingleTimeBucket(SSCModel):
     def is_finalized(self, is_finalized: "bool"):
         """Sets the is_finalized of this SingleTimeBucket.
 
-        Specifies if all of the events in the current bucket have been finalized. 
+        Specifies if all of the events in the current bucket  have been finalized. 
 
         :param is_finalized: The is_finalized of this SingleTimeBucket.
         :type: bool
@@ -6798,7 +6721,7 @@ class TimeBucketsSummary(SSCModel):
     @property
     def cursor_time(self) -> "float":
         """ Gets the cursor_time of this TimeBucketsSummary.
-        Identifies where the cursor is, in processing the events. The 'cursorTime' is a timestamp specified in UNIX time. 
+        Identifies where the cursor is, in processing the events.  The 'cursorTime' is a timestamp specified in UNIX time. 
         """
         return self._attrs.get("cursorTime")
 
@@ -6806,7 +6729,7 @@ class TimeBucketsSummary(SSCModel):
     def cursor_time(self, cursor_time: "float"):
         """Sets the cursor_time of this TimeBucketsSummary.
 
-        Identifies where the cursor is, in processing the events. The 'cursorTime' is a timestamp specified in UNIX time. 
+        Identifies where the cursor is, in processing the events.  The 'cursorTime' is a timestamp specified in UNIX time. 
 
         :param cursor_time: The cursor_time of this TimeBucketsSummary.
         :type: float

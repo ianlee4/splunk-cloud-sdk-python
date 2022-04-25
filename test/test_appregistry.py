@@ -12,7 +12,7 @@ import pytest
 
 from time import time
 
-from splunk_sdk.app_registry import CreateAppRequest, UpdateAppRequest, AppRegistry, AppName, NativeAppPOST, ServiceAppPOST
+from splunk_sdk.app_registry import CreateAppRequest, UpdateAppRequest, AppRegistry, AppName, NativeAppPOST
 from splunk_sdk.base_client import BaseClient
 from test.fixtures import get_test_client as test_client  # NOQA
 
@@ -29,6 +29,7 @@ def test_crud_app(test_client: BaseClient):
         redirect_urls = ["https://localhost"]
 
         app = appregistry.create_app(NativeAppPOST(
+            kind="native",
             name=app_name,
             title=app_title,
             redirect_urls=redirect_urls,
@@ -72,7 +73,8 @@ def test_app_rotate_secret(test_client: BaseClient):
         app_title = "psdk-" + app_name + "-" + secs
         redirect_urls = ["https://localhost"]
 
-        app = appregistry.create_app(ServiceAppPOST(
+        app = appregistry.create_app(NativeAppPOST(
+            kind="native",
             name=app_name,
             title=app_title,
             redirect_urls=redirect_urls,

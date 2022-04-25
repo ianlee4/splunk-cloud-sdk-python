@@ -1,4 +1,4 @@
-# Copyright © 2022 Splunk, Inc.
+# Copyright © 2021 Splunk, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"): you may
 # not use this file except in compliance with the License. You may obtain
@@ -1761,7 +1761,7 @@ class PipelineNode(SSCModel):
         instance._attrs = model
         return instance
 
-    def __init__(self, id: "str", op: "str", annotations: "object" = None, arguments: "object" = None, attributes: "object" = None, resolved_id: "str" = None, statement_name: "str" = None, **extra):
+    def __init__(self, id: "str", op: "str", arguments: "object" = None, attributes: "object" = None, resolved_id: "str" = None, statement_name: "str" = None, **extra):
         """PipelineNode"""
 
         self._attrs = dict()
@@ -1769,8 +1769,6 @@ class PipelineNode(SSCModel):
             self._attrs["id"] = id
         if op is not None:
             self._attrs["op"] = op
-        if annotations is not None:
-            self._attrs["annotations"] = annotations
         if arguments is not None:
             self._attrs["arguments"] = arguments
         if attributes is not None:
@@ -1821,24 +1819,6 @@ class PipelineNode(SSCModel):
         if op is None:
             raise ValueError("Invalid value for `op`, must not be `None`")
         self._attrs["op"] = op
-
-    @property
-    def annotations(self) -> "dict":
-        """ Gets the annotations of this PipelineNode.
-        For internal use only.
-        """
-        return self._attrs.get("annotations")
-
-    @annotations.setter
-    def annotations(self, annotations: "dict"):
-        """Sets the annotations of this PipelineNode.
-
-        For internal use only.
-
-        :param annotations: The annotations of this PipelineNode.
-        :type: object
-        """
-        self._attrs["annotations"] = annotations
 
     @property
     def arguments(self) -> "dict":
@@ -5451,7 +5431,7 @@ class UpgradePipelineRequest(SSCModel):
         instance._attrs = model
         return instance
 
-    def __init__(self, allow_non_restored_state: "bool" = None, cancel_with_save_point: "bool" = None, skip_restore_state: "bool" = None, validate_save_point: "bool" = None, **extra):
+    def __init__(self, allow_non_restored_state: "bool" = None, cancel_with_save_point: "bool" = None, skip_restore_state: "bool" = None, **extra):
         """UpgradePipelineRequest"""
 
         self._attrs = dict()
@@ -5461,8 +5441,6 @@ class UpgradePipelineRequest(SSCModel):
             self._attrs["cancelWithSavePoint"] = cancel_with_save_point
         if skip_restore_state is not None:
             self._attrs["skipRestoreState"] = skip_restore_state
-        if validate_save_point is not None:
-            self._attrs["validateSavePoint"] = validate_save_point
         for k, v in extra.items():
             self._attrs[k] = v
 
@@ -5519,24 +5497,6 @@ class UpgradePipelineRequest(SSCModel):
         :type: bool
         """
         self._attrs["skipRestoreState"] = skip_restore_state
-
-    @property
-    def validate_save_point(self) -> "bool":
-        """ Gets the validate_save_point of this UpgradePipelineRequest.
-        Set to true to validate a savepoint before stopping the pipeline.
-        """
-        return self._attrs.get("validateSavePoint")
-
-    @validate_save_point.setter
-    def validate_save_point(self, validate_save_point: "bool"):
-        """Sets the validate_save_point of this UpgradePipelineRequest.
-
-        Set to true to validate a savepoint before stopping the pipeline.
-
-        :param validate_save_point: The validate_save_point of this UpgradePipelineRequest.
-        :type: bool
-        """
-        self._attrs["validateSavePoint"] = validate_save_point
 
     def to_dict(self):
         return {k: v for (k, v) in self._attrs.items() if v is not None}

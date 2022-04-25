@@ -16,9 +16,6 @@ generate:
 	scripts/copy_generated_files.sh $(TMPDIR)
 	rm -rf $(TMPDIR)
 
-pep:
-	tox -e pep8
-
 update_dependencies:
 	pip3 freeze > requirements.txt
 

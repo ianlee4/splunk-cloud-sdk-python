@@ -16,8 +16,6 @@ from splunk_sdk.ingest import IngestAPI, Event, HTTPResponse, Metric, \
     MetricAttribute, MetricEvent
 from test.fixtures import get_test_client as test_client  # NOQA
 
-FILE_TO_UPLOAD = os.path.join(os.path.abspath(os.path.dirname(__file__)),
-                              "data/ml/iris.csv")
 
 @pytest.mark.usefixtures("test_client")  # NOQA
 def test_post_events(test_client):
@@ -65,5 +63,6 @@ def test_post_events_bad_request(test_client):
 @pytest.mark.usefixtures("test_client")
 def test_post_file(test_client):
     ingest = IngestAPI(test_client)
-    resp = ingest.upload_files(FILE_TO_UPLOAD)
+    # just use test_ingest.py as a random file to test upload
+    resp = ingest.upload_files(os.path.join(os.curdir, "test_ingest.py"))
     assert (resp.code == "SUCCESS")
