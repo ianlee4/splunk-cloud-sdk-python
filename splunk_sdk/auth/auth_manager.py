@@ -169,6 +169,7 @@ class AuthManager(ABC):
         self._client_id = client_id
         self._context = None
         self._requests_hooks = requests_hooks or []
+        self._cookie = None
 
     def _get(self, url, headers=None, params=None):
         response = requests.get(
@@ -176,7 +177,8 @@ class AuthManager(ABC):
             headers=headers or HEADERS_DEFAULT,
             params=params,
             allow_redirects=False,
-            hooks={REQUESTS_HOOK_NAME_RESPONSE: self._requests_hooks})
+            hooks={REQUESTS_HOOK_NAME_RESPONSE: self._requests_hooks},
+            cookies=self._cookie)
         return response
 
     # Note: the requests module interprets the data param in an interesting
@@ -339,7 +341,7 @@ class PKCEAuthManager(AuthManager):
         result,cookies = self._authenticate_user(username, password, csrfToken, cookies)
         if result is None:
             return None
-        return cookies.get("sessionToken")    
+        return cookies
 
     def _get_csrf_token(self):
         """Returns a CSRF token to be passed into /authn"""
@@ -404,7 +406,7 @@ class PKCEAuthManager(AuthManager):
         self.validate()
 
         # retrieve one time session token
-        session_token = self._get_session_token(self._username, self._password)
+        self._cookie = self._get_session_token(self._username, self._password)
 
         cv = self._create_code_verifier(50)
         cc = self._create_code_challenge(cv)
@@ -418,7 +420,7 @@ class PKCEAuthManager(AuthManager):
             redirect_uri=self._redirect_uri,
             response_type="code",
             scope=self._scope,
-            session_token=session_token,
+            session_token="undefined",
             tenant=self._tenant,
             state=self._state or str(time.time())
         )
